@@ -50,18 +50,21 @@ export default function SecurityPage() {
   };
 
   return (
-    <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium bold text-gray-900 mb-6">
-        Security Settings
-      </h1>
-      <Card className="mb-8">
+    <section className="flex-1 space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold bg-gradient-to-r from-white to-gray-400 text-transparent bg-clip-text">
+          Segurança
+        </h1>
+      </div>
+
+      <Card className="bg-gray-900/50 border-white/10 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle>Password</CardTitle>
+          <CardTitle className="text-white">Senha</CardTitle>
         </CardHeader>
         <CardContent>
           <form className="space-y-4" onSubmit={handlePasswordSubmit}>
             <div>
-              <Label htmlFor="current-password">Current Password</Label>
+              <Label htmlFor="current-password" className="text-white">Senha Atual</Label>
               <Input
                 id="current-password"
                 name="currentPassword"
@@ -70,10 +73,11 @@ export default function SecurityPage() {
                 required
                 minLength={8}
                 maxLength={100}
+                className="bg-gray-800/50 border-white/10 text-white placeholder:text-gray-500 focus:ring-blue-500/50 focus:border-blue-500/50"
               />
             </div>
             <div>
-              <Label htmlFor="new-password">New Password</Label>
+              <Label htmlFor="new-password" className="text-white">Nova Senha</Label>
               <Input
                 id="new-password"
                 name="newPassword"
@@ -82,10 +86,11 @@ export default function SecurityPage() {
                 required
                 minLength={8}
                 maxLength={100}
+                className="bg-gray-800/50 border-white/10 text-white placeholder:text-gray-500 focus:ring-blue-500/50 focus:border-blue-500/50"
               />
             </div>
             <div>
-              <Label htmlFor="confirm-password">Confirm New Password</Label>
+              <Label htmlFor="confirm-password" className="text-white">Confirmar Nova Senha</Label>
               <Input
                 id="confirm-password"
                 name="confirmPassword"
@@ -93,28 +98,29 @@ export default function SecurityPage() {
                 required
                 minLength={8}
                 maxLength={100}
+                className="bg-gray-800/50 border-white/10 text-white placeholder:text-gray-500 focus:ring-blue-500/50 focus:border-blue-500/50"
               />
             </div>
             {passwordState.error && (
-              <p className="text-red-500 text-sm">{passwordState.error}</p>
+              <p className="text-red-400 text-sm">{passwordState.error}</p>
             )}
             {passwordState.success && (
-              <p className="text-green-500 text-sm">{passwordState.success}</p>
+              <p className="text-green-400 text-sm">{passwordState.success}</p>
             )}
             <Button
               type="submit"
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              className="bg-blue-600 hover:bg-blue-500 text-white transition-colors duration-200"
               disabled={isPasswordPending}
             >
               {isPasswordPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Updating...
+                  Atualizando...
                 </>
               ) : (
                 <>
                   <Lock className="mr-2 h-4 w-4" />
-                  Update Password
+                  Atualizar Senha
                 </>
               )}
             </Button>
@@ -122,17 +128,17 @@ export default function SecurityPage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-gray-900/50 border-white/10 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle>Delete Account</CardTitle>
+          <CardTitle className="text-white">Excluir Conta</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-gray-500 mb-4">
-            Account deletion is non-reversable. Please proceed with caution.
+          <p className="text-sm text-gray-400 mb-4">
+            A exclusão da conta é irreversível. Por favor, proceda com cautela.
           </p>
           <form onSubmit={handleDeleteSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="delete-password">Confirm Password</Label>
+              <Label htmlFor="delete-password" className="text-white">Confirmar Senha</Label>
               <Input
                 id="delete-password"
                 name="password"
@@ -140,26 +146,27 @@ export default function SecurityPage() {
                 required
                 minLength={8}
                 maxLength={100}
+                className="bg-gray-800/50 border-white/10 text-white placeholder:text-gray-500 focus:ring-blue-500/50 focus:border-blue-500/50"
               />
             </div>
             {deleteState.error && (
-              <p className="text-red-500 text-sm">{deleteState.error}</p>
+              <p className="text-red-400 text-sm">{deleteState.error}</p>
             )}
             <Button
               type="submit"
               variant="destructive"
-              className="bg-red-600 hover:bg-red-700"
+              className="bg-red-600 hover:bg-red-700 text-white transition-colors duration-200"
               disabled={isDeletePending}
             >
               {isDeletePending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Deleting...
+                  Excluindo...
                 </>
               ) : (
                 <>
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Delete Account
+                  Excluir Conta
                 </>
               )}
             </Button>

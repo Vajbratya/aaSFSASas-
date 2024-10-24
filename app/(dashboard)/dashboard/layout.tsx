@@ -15,59 +15,62 @@ export default function DashboardLayout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const navItems = [
-    { href: '/dashboard', icon: Users, label: 'Team' },
-    { href: '/dashboard/general', icon: Settings, label: 'General' },
-    { href: '/dashboard/activity', icon: Activity, label: 'Activity' },
-    { href: '/dashboard/security', icon: Shield, label: 'Security' },
+    { href: '/dashboard', icon: Users, label: 'Equipe' },
+    { href: '/dashboard/general', icon: Settings, label: 'Geral' },
+    { href: '/dashboard/activity', icon: Activity, label: 'Atividades' },
+    { href: '/dashboard/security', icon: Shield, label: 'Segurança' },
   ];
 
   return (
-    <div className="flex flex-col min-h-[calc(100dvh-68px)] max-w-7xl mx-auto w-full">
+    <div className="flex h-screen w-full bg-[#000000]">
       {/* Mobile header */}
-      <div className="lg:hidden flex items-center justify-between bg-white border-b border-gray-200 p-4">
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between bg-[#000000] border-b border-[#1d1d1d] p-4">
         <div className="flex items-center">
-          <span className="font-medium">Settings</span>
+          <span className="font-medium text-[#fafafa]">Configurações</span>
         </div>
         <Button
-          className="-mr-3"
+          className="text-[#fafafa] hover:bg-[#1d1d1d]"
           variant="ghost"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         >
           <Menu className="h-6 w-6" />
-          <span className="sr-only">Toggle sidebar</span>
         </Button>
       </div>
 
-      <div className="flex flex-1 overflow-hidden h-full">
-        {/* Sidebar */}
-        <aside
-          className={`w-64 bg-white lg:bg-gray-50 border-r border-gray-200 lg:block ${
-            isSidebarOpen ? 'block' : 'hidden'
-          } lg:relative absolute inset-y-0 left-0 z-40 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
-            isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
-        >
-          <nav className="h-full overflow-y-auto p-4">
+      {/* Sidebar */}
+      <aside
+        className={`fixed lg:static top-0 left-0 h-full w-64 bg-[#000000] border-r border-[#1d1d1d] transform transition-transform duration-300 ease-in-out z-40
+          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+      >
+        <div className="h-full pt-4 lg:pt-0">
+          <nav className="space-y-1 px-3">
             {navItems.map((item) => (
               <Link key={item.href} href={item.href} passHref>
                 <Button
-                  variant={pathname === item.href ? 'secondary' : 'ghost'}
-                  className={`my-1 w-full justify-start ${
-                    pathname === item.href ? 'bg-gray-100' : ''
-                  }`}
+                  variant="ghost"
+                  className={`w-full justify-start transition-all duration-200 text-[#888888] hover:text-[#fafafa]
+                    ${pathname === item.href 
+                      ? 'bg-[#1d1d1d] text-[#fafafa]' 
+                      : 'hover:bg-[#1d1d1d]'}`}
                   onClick={() => setIsSidebarOpen(false)}
                 >
-                  <item.icon className="mr-2 h-4 w-4" />
+                  <item.icon className={`mr-2 h-4 w-4`} />
                   {item.label}
                 </Button>
               </Link>
             ))}
           </nav>
-        </aside>
+        </div>
+      </aside>
 
-        {/* Main content */}
-        <main className="flex-1 overflow-y-auto p-0 lg:p-4">{children}</main>
-      </div>
+      {/* Main content */}
+      <main className="flex-1 overflow-auto bg-[#000000] pt-16 lg:pt-0">
+        <div className="h-full p-6">
+          <div className="max-w-5xl mx-auto">
+            {children}
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

@@ -8,6 +8,8 @@ import { useActionState } from 'react';
 import { TeamDataWithMembers, User } from '@/lib/db/schema';
 import { removeTeamMember } from '@/app/(login)/actions';
 import { InviteTeamMember } from './invite-team';
+import Link from 'next/link';
+import { ResendButton } from '@/components/ui/resend-button';
 
 type ActionState = {
   error?: string;
@@ -25,51 +27,53 @@ export function Settings({ teamData }: { teamData: TeamDataWithMembers }) {
   };
 
   return (
-    <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium mb-6">Team Settings</h1>
-      <Card className="mb-8">
+    <section className="flex-1 space-y-6">
+      <h1 className="text-2xl font-semibold text-[#fafafa]">Configurações da Equipe</h1>
+      
+      <Card className="bg-[#000000] border border-[#1d1d1d]">
         <CardHeader>
-          <CardTitle>Team Subscription</CardTitle>
+          <CardTitle className="text-[#fafafa]">Assinatura da Equipe</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
               <div className="mb-4 sm:mb-0">
-                <p className="font-medium">
-                  Current Plan: {teamData.planName || 'Free'}
+                <p className="font-medium text-[#fafafa]">
+                  Plano Atual: {teamData.planName || 'Gratuito'}
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-[#888888]">
                   {teamData.subscriptionStatus === 'active'
-                    ? 'Billed monthly'
+                    ? 'Cobrança mensal'
                     : teamData.subscriptionStatus === 'trialing'
-                      ? 'Trial period'
-                      : 'No active subscription'}
+                      ? 'Período de teste'
+                      : 'Sem assinatura ativa'}
                 </p>
               </div>
               <form action={customerPortalAction}>
-                <Button type="submit" variant="outline">
-                  Manage Subscription
-                </Button>
+                <ResendButton type="submit" variant="default">
+                  Gerenciar Assinatura
+                </ResendButton>
               </form>
             </div>
           </div>
         </CardContent>
       </Card>
-      <Card className="mb-8">
+
+      <Card className="bg-[#000000] border border-[#1d1d1d]">
         <CardHeader>
-          <CardTitle>Team Members</CardTitle>
+          <CardTitle className="text-[#fafafa]">Membros da Equipe</CardTitle>
         </CardHeader>
         <CardContent>
           <ul className="space-y-4">
             {teamData.teamMembers.map((member, index) => (
-              <li key={member.id} className="flex items-center justify-between">
+              <li key={member.id} className="flex items-center justify-between p-3 rounded-lg bg-[#1d1d1d] border border-[#333333]">
                 <div className="flex items-center space-x-4">
                   <Avatar>
                     <AvatarImage
-                      src={`/placeholder.svg?height=32&width=32`}
+                      src={`/api/avatar/${member.user.id}`}
                       alt={getUserDisplayName(member.user)}
                     />
-                    <AvatarFallback>
+                    <AvatarFallback className="bg-[#333333] text-[#fafafa]">
                       {getUserDisplayName(member.user)
                         .split(' ')
                         .map((n) => n[0])
@@ -77,10 +81,10 @@ export function Settings({ teamData }: { teamData: TeamDataWithMembers }) {
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-medium">
+                    <p className="font-medium text-[#fafafa]">
                       {getUserDisplayName(member.user)}
                     </p>
-                    <p className="text-sm text-muted-foreground capitalize">
+                    <p className="text-sm text-[#888888] capitalize">
                       {member.role}
                     </p>
                   </div>
@@ -88,25 +92,39 @@ export function Settings({ teamData }: { teamData: TeamDataWithMembers }) {
                 {index > 1 ? (
                   <form action={removeAction}>
                     <input type="hidden" name="memberId" value={member.id} />
-                    <Button
+                    <ResendButton
                       type="submit"
                       variant="outline"
                       size="sm"
                       disabled={isRemovePending}
                     >
-                      {isRemovePending ? 'Removing...' : 'Remove'}
-                    </Button>
+                      {isRemovePending ? 'Removendo...' : 'Remover'}
+                    </ResendButton>
                   </form>
                 ) : null}
               </li>
             ))}
           </ul>
           {removeState?.error && (
-            <p className="text-red-500 mt-4">{removeState.error}</p>
+            <p className="text-red-400 mt-4">{removeState.error}</p>
           )}
         </CardContent>
       </Card>
+
       <InviteTeamMember />
+
+      <Card className="bg-[#000000] border border-[#1d1d1d]">
+        <CardHeader>
+          <CardTitle className="text-[#fafafa]">Gerador de Laudos</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Link href="/radiology-report-generator" passHref>
+            <ResendButton variant="default">
+              Ir para o Gerador de Laudos
+            </ResendButton>
+          </Link>
+        </CardContent>
+      </Card>
     </section>
   );
 }

@@ -1,0 +1,53 @@
+
+<svg
+  width="100"
+  height="100"
+  viewBox="0 0 100 100"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <radialGradient id="pulseGradient">
+      <stop offset="10%" stop-color="#7CFFD4" />
+      <stop offset="95%" stop-color="#7CFFD400" />
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="0.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <mask id="logo-clip">
+      <path
+        d="M25 25H45V75H25V25ZM45 75H75V85H45V75Z"
+        fill="white"
+      />
+    </mask>
+  </defs>
+  <style>
+    .logoPath {
+      offset-path: path('M25 25H45V75H25V25ZM45 75H75V85H45V75Z');
+      animation: followpath 10s linear infinite, pulse 5s ease-in-out infinite;
+      opacity: 0;
+    }
+    @keyframes followpath {
+      to {
+        offset-distance: 100%;
+      }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 0.6; }
+    }
+  </style>
+  <rect width="100" height="100" fill="black" />
+  <path
+    d="M25 25H45V75H25V25ZM45 75H75V85H45V75Z"
+    fill="white"
+    filter="url(#glow)"
+  />
+  <g mask="url(#logo-clip)">
+    <circle r="3" fill="url(#pulseGradient)" class="logoPath" />
+  </g>
+</svg>
